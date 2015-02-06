@@ -27,7 +27,7 @@ rule all:
      
 rule test:
     input: myfunc
-    output: 'output/{sample}.txt'
+    output: '../output/{sample}.txt'
     params: batch='-l nodes=1',python2virtenv=PY2VIRTENV,sample='{sample}',scratchdir="/tmp",mywd=config['mywd']
     threads: 4
     shell: """source {params.python2virtenv}; \
