@@ -38,8 +38,8 @@ rule test:
               mkdir {params.scratchdir}/{params.sample} ; \
               
               # Get files from synapse
+              cp {input} {params.scratchdir}/{params.sample}/ ; \
               pushd {params.scratchdir}/{params.sample} ; \
-              cp {input} .
               cat `basename {input}` | xargs -n 1 synapse get ; \
               popd ; \
               
