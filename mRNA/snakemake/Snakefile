@@ -8,7 +8,7 @@ import csv
 # For running synapse client, which requires python 2
 PY2VIRTENV = "/home/kdaily/.virtualenvs/synapsetables/bin/activate"
 
-SAMPLE_FILE = list(csv.DictReader(open("test.csv")))
+SAMPLE_FILE = list(csv.DictReader(open("../input/test.csv")))
 
 SAMPLE_DICT = dict([(x["UID"], "../input/samples/%s.txt" % x["UID"]) for x in SAMPLE_FILE])
 
@@ -28,7 +28,7 @@ rule all:
 rule test:
     input: myfunc
     output: 'output/{sample}.txt'
-    params: python2virtenv=PY2VIRTENV,sample='{sample}',scratchdir="/tmp",mywd=config['mywd']
+    params: batch='-l nodes=1',python2virtenv=PY2VIRTENV,sample='{sample}',scratchdir="/tmp",mywd=config['mywd']
     threads: 4
     shell: """source {params.python2virtenv}; \
 
