@@ -6,7 +6,7 @@ import os
 import csv
 
 # For running synapse client, which requires python 2
-PY2VIRTENV = "/home/kdaily/.virtualenvs/python2.7/bin/activate"
+PY2VIRTENV = "/home/ubuntu/.virtualenvs/python2.7/bin/activate"
 
 SAMPLE_FILE = list(csv.DictReader(open("../input/test.csv")))
 
@@ -28,7 +28,7 @@ rule all:
 rule test:
     input: myfunc
     output: '../output/{sample}.txt'
-    params: batch='-l nodes=1',python2virtenv=PY2VIRTENV,sample='{sample}',scratchdir="/tmp",mywd=config['mywd']
+    params: batch='-l nodes=1',python2virtenv=PY2VIRTENV,sample='{sample}',scratchdir="/tmp"
     threads: 4
     shell: """source {params.python2virtenv}; \
 
@@ -39,8 +39,8 @@ rule test:
               
               # Get files from synapse
               pushd {params.scratchdir}/{params.sample} ; \
-              synapse get `head -n 1 {params.mywd}/{input}`; \
-              synapse get `tail -n 1 {params.mywd}/{input}`; \
+              cp {input} .
+              cat `basename {input}` | xargs -n 1 synapse get ; \
               popd ; \
               
               ## Do the work
